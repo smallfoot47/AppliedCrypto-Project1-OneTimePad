@@ -7,6 +7,7 @@
 #endif
 
 #include <sstream>
+#include <random>
 #include <string>
 #include <array>
 
@@ -39,8 +40,11 @@ namespace sim
     };
 
     const char Node::send() const {
-        srand(time(0));
-        return rand() % 94 + 32; // printable ASCII range
+        std::random_device dev;
+        std::mt19937 rng(dev());
+        std::uniform_int_distribution<char> printable(32, 126);
+
+        return printable(rng); // printable ASCII range
     }
 
     const std::string Node::read() const {
@@ -62,10 +66,13 @@ namespace sim
 
     template <size_t N>
     std::pair<size_t, size_t> Simulator<N>::run() {        
-        srand(time(0));
-        
         size_t perms = N * (N - 1u);
-        size_t idx = rand() % perms;
+
+        std::random_device dev;
+        std::mt19937 rng(dev());
+        std::uniform_int_distribution<size_t> index(0, perms - 1);
+
+        size_t idx = index(rng);
         
         size_t sender_idx = idx / (N - 1u);
         size_t reciever_idx = (idx % (N - 1u) + sender_idx + 1u) % N;
