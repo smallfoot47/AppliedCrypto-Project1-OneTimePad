@@ -46,12 +46,13 @@ namespace alg
         
         std::random_device dev;
         std::mt19937 rng(dev());
-        std::uniform_int_distribution<char> randomChar(0, 255);
+        std::uniform_int_distribution<std::mt19937::result_type> randomChar(0, 255);
 
-        for (size_t i = 0u; i < L; ++i) {
+        for (size_t i = 0u; i < L; i++) {
             padspace[i] = randomChar(rng);
             LOG("%c", padspace[i]);
         }
+
         LOG("\n");
     }
 
