@@ -75,11 +75,13 @@ namespace alg
         }
 
         if (left_width > right_width) { // move left
-            pad = padspace[++curr.left];
-            LOG("pad %c at [%ld] allocated to %ld", pad, curr.left, idx);
+            curr.left = (--curr.left) % N;
+            pad = padspace[curr.left];
+            LOG("pad %d at [%ld] allocated to %ld\n", pad, curr.left, idx);
         } else { // move right
-            pad = padspace[++curr.right];
-            LOG("pad %c at [%ld] allocated to %ld", pad, curr.right, idx);
+            curr.left = (++curr.right) % N;
+            pad = padspace[curr.right];
+            LOG("pad %d at [%ld] allocated to %ld\n", pad, curr.right, idx);
         }
 
         return { pad, true };
