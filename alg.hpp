@@ -40,6 +40,13 @@ namespace alg
         }
 
         padspace = new char[L];
+
+        LOG("PADSPACE:");
+        for (size_t i = 0u; i < L; ++i) {
+            padspace[i] = 'E';
+            LOG("%c", padspace[i]);
+        }
+        LOG("\n");
     }
 
     template <size_t N>
@@ -56,8 +63,12 @@ namespace alg
         auto right_width = next.left - curr.right;
 
         char pad;
-        
-        if (left_width <= 0 || right_width <= 0) { // non-trivial case
+
+        LOG("prev: [%ld, %ld], gap of %ld\n", prev.left, prev.right, left_width);
+        LOG("curr: [%ld, %ld]\n", curr.left, curr.right);
+        LOG("next: [%ld, %ld], gap of %ld\n", next.left, next.right, right_width);
+
+        if (left_width < 0 || right_width < 0) { // non-trivial case
             bool isLegal = false;
 
             if (prev.left > curr.right) { // prev is ahead, legal
@@ -77,11 +88,11 @@ namespace alg
         if (left_width > right_width) { // move left
             curr.left = (--curr.left) % N;
             pad = padspace[curr.left];
-            LOG("pad %d at [%ld] allocated to %ld\n", pad, curr.left, idx);
+            LOG("pad %c at [%ld] allocated to %ld\n", pad, curr.left, idx);
         } else { // move right
             curr.left = (++curr.right) % N;
             pad = padspace[curr.right];
-            LOG("pad %d at [%ld] allocated to %ld\n", pad, curr.right, idx);
+            LOG("pad %c at [%ld] allocated to %ld\n", pad, curr.right, idx);
         }
 
         return { pad, true };
